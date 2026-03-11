@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/ptf33/Documents/Golang/GofiberExpenseTracker/GofiberExpenseTracker -type f -not -path */vendor/* -not -path */.git/*)"
+    ]
+  }
+}
