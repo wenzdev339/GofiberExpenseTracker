@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-tracker
+  namespace: expense-tracker
+  labels:
+    app: expense-tracker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: expense-tracker
+  template:
+    metadata:
+      labels:
+        app: expense-tracker
+    spec:
+      containers:
+        - name: expense-tracker
+          image: expense-tracker:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: expense-tracker-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
